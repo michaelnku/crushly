@@ -43,7 +43,7 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  profile  Profile?
+  profile  DatingProfile?
 
   crushesSent     Crush[] @relation("CrushesSent")
   crushesReceived Crush[] @relation("CrushesReceived")
@@ -101,14 +101,18 @@ model VerificationToken {
 // PROFILE & MEDIA
 //////////////////////
 
-model Profile {
-  id           String  @id @default(cuid())
-  userId       String  @unique
+model DatingProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  displayName String
+
   gender       Gender
   interestedIn Gender
-  bio          String?
-  age          Int
-  location     String
+
+  bio      String?
+  age      Int
+  location String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -120,12 +124,15 @@ model Profile {
 model UserPhoto {
   id        String @id @default(cuid())
   profileId String
-  imageUrl  String
-  imageKey  String
+  photoUrl  String
+  photoKey  String
+
+  isPrimary Boolean @default(false)
+  order     Int
 
   createdAt DateTime @default(now())
 
-  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profile DatingProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 //////////////////////
