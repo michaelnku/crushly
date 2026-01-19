@@ -31,7 +31,6 @@ enum Gender {
 //////////////////////
 // AUTH MODELS (BetterAuth)
 //////////////////////
-
 model User {
   id            String   @id @default(cuid())
   email         String   @unique
@@ -60,6 +59,8 @@ model Account {
   type              String
   provider          String
   providerAccountId String
+
+  password String?
 
   refresh_token String?
   access_token  String?

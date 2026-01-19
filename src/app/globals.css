@@ -46,6 +46,34 @@
   --radius-4xl: calc(var(--radius) + 16px);
 }
 
+.bg-crushly {
+  background-color: var(--crushly-bg);
+}
+
+.bg-crushly-soft {
+  background-color: var(--crushly-bg-soft);
+}
+
+.border-crushly {
+  border-color: var(--crushly-border);
+}
+
+.text-crushly-primary {
+  color: var(--crushly-text-primary);
+}
+
+.text-crushly-secondary {
+  color: var(--crushly-text-secondary);
+}
+
+.text-crushly-muted {
+  color: var(--crushly-text-muted);
+}
+
+.bg-crushly-gradient {
+  background: var(--crushly-gradient-love);
+}
+
 :root {
   /* Brand */
   --crushly-primary: #1b1f3b; /* Midnight Indigo */
