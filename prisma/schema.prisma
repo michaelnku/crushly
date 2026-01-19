@@ -3,7 +3,6 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -13,24 +12,9 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  fullName      String?
-  password      String?
-  email         String    @unique
-  staffId       String    @unique @default(cuid())
-  emailVerified DateTime?
-  image         String?
-  avatar        String?
-  accounts      Account[]
-  sessions      Session[]
-
-  role UserRole @default(USER)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+//////////////////////
+// ENUMS
+//////////////////////
 
 enum UserRole {
   ADMIN
@@ -38,35 +22,71 @@ enum UserRole {
   USER
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+//////////////////////
+// AUTH MODELS (BetterAuth)
+//////////////////////
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  role          UserRole @default(USER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  profile  Profile?
+
+  crushesSent     Crush[] @relation("CrushesSent")
+  crushesReceived Crush[] @relation("CrushesReceived")
+
+  matchesA Match[] @relation("MatchUserA")
+  matchesB Match[] @relation("MatchUserB")
+
+  messages Message[]
+}
+
 model Account {
+  id                String @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
+
+  refresh_token String?
+  access_token  String?
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String?
+  session_state String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@id([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
+  id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -75,4 +95,76 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+//////////////////////
+// PROFILE & MEDIA
+//////////////////////
+
+model Profile {
+  id           String  @id @default(cuid())
+  userId       String  @unique
+  gender       Gender
+  interestedIn Gender
+  bio          String?
+  age          Int
+  location     String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photos UserPhoto[]
+}
+
+model UserPhoto {
+  id        String @id @default(cuid())
+  profileId String
+  imageUrl  String
+  imageKey  String
+
+  createdAt DateTime @default(now())
+
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+//////////////////////
+// DATING LOGIC
+//////////////////////
+
+model Crush {
+  id         String   @id @default(cuid())
+  fromUserId String
+  toUserId   String
+  createdAt  DateTime @default(now())
+
+  fromUser User @relation("CrushesSent", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("CrushesReceived", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@unique([fromUserId, toUserId])
+}
+
+model Match {
+  id        String   @id @default(cuid())
+  userAId   String
+  userBId   String
+  matchedAt DateTime @default(now())
+
+  userA User @relation("MatchUserA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB User @relation("MatchUserB", fields: [userBId], references: [id], onDelete: Cascade)
+
+  messages Message[]
+
+  @@unique([userAId, userBId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  matchId   String
+  senderId  String
+  content   String
+  createdAt DateTime @default(now())
+
+  match  Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  sender User  @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
