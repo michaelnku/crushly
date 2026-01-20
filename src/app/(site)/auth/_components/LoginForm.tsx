@@ -49,7 +49,6 @@ export default function LoginForm() {
       }
 
       router.push("/discover");
-      router.refresh();
     });
   };
 
