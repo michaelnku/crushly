@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { CurrentUser } from "@/lib/currentUser";
-import OnboardingForm from "../_components/OnboardingForm";
 
-export default async function OnboardingPage() {
+export async function requireProfile() {
   const user = await CurrentUser();
 
   if (!user) {
@@ -15,9 +14,9 @@ export default async function OnboardingPage() {
     select: { id: true },
   });
 
-  if (profile) {
-    redirect("/discover");
+  if (!profile) {
+    redirect("/onboarding");
   }
 
-  return <OnboardingForm />;
+  return { user, profile };
 }

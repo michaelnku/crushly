@@ -112,7 +112,7 @@ model DatingProfile {
   interestedIn Gender
 
   bio      String?
-  age      Int
+  age      Int     @default(18)
   location String
 
   createdAt DateTime @default(now())

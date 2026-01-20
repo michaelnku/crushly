@@ -1,9 +1,13 @@
 "use client";
 
-import { userSchema, UserSchemaType } from "@/lib/zodValidation";
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,122 +17,97 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState, useTransition } from "react";
-import { createUser } from "@/actions/user";
-import Link from "next/link";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+
+import {
+  registerUserSchema,
+  RegisterUserSchemaType,
+} from "@/lib/zodValidation";
+import { createUserAction } from "@/actions/user";
 import SocialLogin from "@/components/auth/SocialLogin";
-import { Eye, EyeOff } from "lucide-react";
 
 export default function RegisterForm() {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
-
+  const router = useRouter();
+  const [error, setError] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<UserSchemaType>({
-    resolver: zodResolver(userSchema),
+  const form = useForm<RegisterUserSchemaType>({
+    resolver: zodResolver(registerUserSchema),
     defaultValues: {
-      name: "",
-      username: "",
-      role: "USER",
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  const handleSubmit = (values: UserSchemaType) => {
+  const handleSubmit = (values: RegisterUserSchemaType) => {
+    setError(undefined);
+
     startTransition(async () => {
-      createUser(values).then((res) => {
-        if (res?.error) {
-          setError(res.error);
-          setSuccess("");
-        } else if (res?.success) {
-          setSuccess(res.success);
-          setError("");
-          form.reset();
-        }
-      });
+      const res = await createUserAction(values);
+
+      if (res?.error) {
+        setError(res.error);
+        return;
+      }
+      //toast
+      router.push("/auth/login");
     });
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-neutral-950 px-4 py-10">
-      <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-lg p-8 space-y-6">
-        {/* Title */}
+    <main className="min-h-screen flex items-center justify-center bg-crushly px-4">
+      <div className="w-full max-w-md bg-crushly-soft border border-crushly rounded-2xl shadow-xl p-8 space-y-7">
+        {/* Error */}
+        {error && (
+          <Alert className="border border-[var(--crushly-error)] bg-[rgba(255,107,129,0.08)] text-[var(--crushly-error)] rounded-lg">
+            <AlertCircle className="w-4 h-4" />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
+
+        {/* Header */}
         <div className="text-center space-y-1">
-          <h1
-            className="text-3xl font-bold tracking-tight"
-            style={{ color: "var(--brand-blue)" }}
-          >
-            Create your account
+          <h1 className="text-3xl font-bold text-crushly-primary">
+            Join Crushly 💖
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            You're just a step away from shopping on NexaMart.
+          <p className="text-sm text-crushly-muted">
+            Create your account and start crushing
           </p>
         </div>
 
+        {/* Form */}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
+            onKeyUp={() => setError(undefined)}
             className="space-y-5"
           >
-            {/* NAME */}
-            <FormField
-              control={form.control}
-              disabled={isPending}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium">Full Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John Doe"
-                      {...field}
-                      className="rounded-lg h-11 focus:ring-2 focus:ring-[var(--brand-blue)]"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* NAME */}
-            <FormField
-              control={form.control}
-              disabled={isPending}
-              name="username"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium">Username</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Doe123"
-                      {...field}
-                      className="rounded-lg h-11 focus:ring-2 focus:ring-[var(--brand-blue)]"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* EMAIL */}
+            {/* Email */}
             <FormField
               control={form.control}
               disabled={isPending}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">Email</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="you@email.com"
-                      type="email"
                       {...field}
-                      className="rounded-lg h-11 focus:ring-2 focus:ring-[var(--brand-blue)]"
+                      type="email"
+                      placeholder="you@email.com"
+                      className="
+                        h-11 rounded-lg
+                        bg-transparent
+                        border border-crushly
+                        text-crushly-primary
+                        placeholder:text-crushly-muted
+                        focus:ring-2
+                        focus:ring-[var(--crushly-accent)]
+                        focus:border-[var(--crushly-accent)]
+                      "
                     />
                   </FormControl>
                   <FormMessage />
@@ -136,113 +115,114 @@ export default function RegisterForm() {
               )}
             />
 
-            {/* PASSWORD */}
+            {/* Password */}
             <FormField
               control={form.control}
               disabled={isPending}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-medium">Password</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="At least 6 characters"
-                        type={showPassword ? "text" : "password"}
-                        {...field}
-                        onChange={(e) => {
-                          field.onChange(e);
-                        }}
-                        className="rounded-lg h-11 focus:ring-2 focus:ring-[var(--brand-blue)]"
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((p) => !p)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[var(--brand-blue)] transition"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* CONFIRM PASSWORD */}
-            <FormField
-              control={form.control}
-              disabled={isPending}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-medium">
-                    Confirm Password
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Password
                   </FormLabel>
-                  <FormControl>
-                    <div className="relative">
+
+                  <div className="relative">
+                    <FormControl>
                       <Input
-                        placeholder="Re-enter password"
-                        type={showConfirm ? "text" : "password"}
                         {...field}
-                        className="rounded-lg h-11 focus:ring-2 focus:ring-[var(--brand-blue)]"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Create a strong password"
+                        className="
+                          h-11 pr-12 rounded-lg
+                          bg-transparent
+                          border border-crushly
+                          text-crushly-primary
+                          placeholder:text-crushly-muted
+                          focus:ring-2
+                          focus:ring-[var(--crushly-accent)]
+                          focus:border-[var(--crushly-accent)]
+                        "
                       />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirm((p) => !p)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[var(--brand-blue)] transition"
-                      >
-                        {showConfirm ? (
-                          <EyeOff className="w-5 h-5" />
-                        ) : (
-                          <Eye className="w-5 h-5" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
+                    </FormControl>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="
+                        absolute right-3 top-1/2 -translate-y-1/2
+                        text-crushly-muted
+                        hover:text-[var(--crushly-accent)]
+                        transition
+                      "
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-5 h-5" />
+                      ) : (
+                        <Eye className="w-5 h-5" />
+                      )}
+                    </button>
+                  </div>
 
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Feedback */}
-            {error && (
-              <p className="text-sm text-red-600 text-center">{error}</p>
-            )}
-            {success && (
-              <p className="text-sm text-green-600 text-center">{success}</p>
-            )}
-
-            {/* SUBMIT */}
+            {/* Submit */}
             <Button
               disabled={isPending}
               type="submit"
-              className="w-full h-11 rounded-lg font-semibold text-white bg-black shadow-md transition disabled:opacity-70"
+              className="
+                w-full h-11 rounded-lg font-semibold text-white
+                bg-crushly-gradient
+                hover:opacity-90 transition
+                disabled:opacity-70
+              "
             >
-              {isPending ? "Creating account..." : "Create your account"}
+              {isPending ? (
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Creating account...
+                </span>
+              ) : (
+                "Create account"
+              )}
             </Button>
           </form>
-
-          <SocialLogin />
         </Form>
 
-        {/* Already have an account */}
-        <p className="text-sm text-center text-gray-600 dark:text-gray-400 mt-4">
-          Already have an account?{" "}
-          <Link
-            href="/auth/login"
-            className="text-[var(--brand-blue)] hover:underline font-medium"
-          >
-            Sign in
-          </Link>
-        </p>
+        <SocialLogin />
+
+        {/* Footer / Legal */}
+        <div className="pt-4 space-y-3 text-center">
+          <p className="text-xs text-crushly-muted leading-relaxed">
+            By creating an account, you agree to Crushly’s{" "}
+            <Link
+              href="/terms"
+              className="text-[var(--crushly-accent)] hover:underline"
+            >
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="text-[var(--crushly-accent)] hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
+          <p className="text-sm text-crushly-muted">
+            Already have an account?{" "}
+            <Link
+              href="/auth/login"
+              className="text-[var(--crushly-love)] font-semibold hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

@@ -7,16 +7,14 @@ import { CurrentUser } from "@/lib/currentUser";
 
 import {
   registerUserSchema,
-  loginUserSchema,
   changePasswordSchema,
   RegisterUserSchemaType,
-  LoginUserSchemaType,
   ChangePasswordSchemaType,
 } from "@/lib/zodValidation";
 import { getUserByEmail } from "@/components/helpers/data";
 
 // create user action
-export const createUser = async (values: RegisterUserSchemaType) => {
+export const createUserAction = async (values: RegisterUserSchemaType) => {
   const parsed = registerUserSchema.safeParse(values);
   if (!parsed.success) {
     return { success: false, error: "Invalid user data" };

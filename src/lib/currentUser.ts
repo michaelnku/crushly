@@ -1,9 +1,9 @@
-import { auth } from "@/auth/auth";
 import { normalizeUser } from "@/lib/normalizeUser";
-import { prisma } from "./prisma";
+import prisma from "./prisma";
+import { auth } from "./auth";
 
 export const CurrentUser = async () => {
-  const session = await auth();
+  const session = await auth.api.getSession();
 
   if (!session?.user?.id) return null;
 

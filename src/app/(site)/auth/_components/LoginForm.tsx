@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { authClient } from "@/lib/auth-client";
 import { loginUserSchema, loginUserSchemaType } from "@/lib/zodValidation";
+import SocialLogin from "@/components/auth/SocialLogin";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -47,17 +48,17 @@ export default function LoginForm() {
         return;
       }
 
-      router.push("/");
+      router.push("/discover");
       router.refresh();
     });
   };
 
   return (
-    <main className="flex items-center justify-center mx-auto max-w-5xl py-22 dark:bg-neutral-950 ">
-      <div className="w-full max-w-md bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-700 rounded-2xl shadow-lg p-8 space-y-7">
+    <main className="min-h-screen flex items-center justify-center bg-crushly px-4">
+      <div className="w-full max-w-md bg-crushly-soft border border-crushly rounded-2xl shadow-xl p-8 space-y-7">
         {/* Error Message */}
         {error && (
-          <Alert variant="destructive" className="text-sm rounded-lg">
+          <Alert className="border border-[var(--crushly-error)] bg-[rgba(255,107,129,0.08)] text-[var(--crushly-error)] rounded-lg">
             <AlertCircle className="w-4 h-4" />
             <AlertTitle>{error}</AlertTitle>
           </Alert>
@@ -65,11 +66,11 @@ export default function LoginForm() {
 
         {/* Title / Subtitle */}
         <div className="text-center space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-700">
-            Hi, welcome back
+          <h1 className="text-3xl font-bold text-crushly-primary">
+            Welcome back 💕
           </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Sign in to continue
+          <p className="text-sm text-crushly-muted">
+            Sign in to continue your crush journey
           </p>
         </div>
 
@@ -86,13 +87,24 @@ export default function LoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">Email</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Email
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder="you@email.com"
                       {...field}
-                      className="rounded-lg h-11 focus:ring-2 "
+                      className="
+                    h-11 rounded-lg
+                    bg-transparent
+                    border border-crushly
+                    text-crushly-primary
+                    placeholder:text-crushly-muted
+                    focus:ring-2
+                    focus:ring-[var(--crushly-accent)]
+                    focus:border-[var(--crushly-accent)]
+                  "
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,7 +119,7 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium">
+                  <FormLabel className="text-sm text-crushly-secondary">
                     Password
                   </FormLabel>
                   <div className="relative">
@@ -116,7 +128,16 @@ export default function LoginForm() {
                         {...field}
                         type={showPassword ? "text" : "password"}
                         placeholder="Enter password"
-                        className="pr-12 rounded-lg h-11 focus:ring-2 "
+                        className="
+                      h-11 pr-12 rounded-lg
+                      bg-transparent
+                      border border-crushly
+                      text-crushly-primary
+                      placeholder:text-crushly-muted
+                      focus:ring-2
+                      focus:ring-[var(--crushly-accent)]
+                      focus:border-[var(--crushly-accent)]
+                    "
                       />
                     </FormControl>
 
@@ -124,7 +145,12 @@ export default function LoginForm() {
                     <button
                       type="button"
                       onClick={() => setShowPassword((prev) => !prev)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[var(--brand-blue)] transition"
+                      className="
+                    absolute right-3 top-1/2 -translate-y-1/2
+                    text-crushly-muted
+                    hover:text-[var(--crushly-accent)]
+                    transition
+                  "
                     >
                       {showPassword ? (
                         <EyeOff className="w-5 h-5" />
@@ -138,23 +164,65 @@ export default function LoginForm() {
                   <div className="flex justify-end mt-1">
                     <Link
                       href="/auth/forgot-password"
-                      className="text-gray-500 hover:underline text-xs font-medium"
+                      className="text-xs text-crushly-muted hover:text-[var(--crushly-accent)] transition"
                     >
                       Forgot password?
                     </Link>
                   </div>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {error && <p className="text-red-500">{error}</p>}
-
-            <Button disabled={isPending} type="submit">
+            {/* Submit */}
+            <Button
+              disabled={isPending}
+              type="submit"
+              className="
+            w-full h-11 rounded-lg font-semibold text-white
+            bg-crushly-gradient
+            hover:opacity-90 transition
+            disabled:opacity-70
+          "
+            >
               {isPending ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </Form>
+
+        <SocialLogin />
+
+        {/* Footer / Legal */}
+        <div className="pt-4 space-y-3 text-center">
+          <p className="text-xs text-crushly-muted leading-relaxed">
+            By signing in, you agree to Crushly’s{" "}
+            <Link
+              href="/terms"
+              className="text-[var(--crushly-accent)] hover:underline"
+            >
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy"
+              className="text-[var(--crushly-accent)] hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
+
+          <p className="text-sm text-crushly-muted">
+            New to Crushly?{" "}
+            <Link
+              href="/auth/register"
+              className="text-[var(--crushly-love)] font-semibold hover:underline"
+            >
+              Create an account
+            </Link>
+          </p>
+        </div>
       </div>
     </main>
   );

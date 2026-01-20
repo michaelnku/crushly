@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/prisma";
-import { ProfileImage, SessionUser, UserDTO } from "@/lib/types";
+import { SessionUser, ProfileDTO } from "@/lib/types";
+import prisma from "./prisma";
 
 export async function normalizeUser(
   sessionUser: SessionUser | undefined | null
-): Promise<UserDTO | null> {
+): Promise<ProfileDTO | null> {
   if (!sessionUser?.email) return null;
 
   const db = await prisma.user.findUnique({
@@ -16,9 +16,5 @@ export async function normalizeUser(
     id: db.id,
     email: db.email,
     role: db.role,
-    name: db.name ?? "",
-    username: db.username ?? "",
-    profileAvatar: db.profileAvatar as ProfileImage | undefined,
-    image: db.image ?? null,
   };
 }

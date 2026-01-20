@@ -24,23 +24,6 @@ export const loginUserSchema = z.object({
 
 export type loginUserSchemaType = z.infer<typeof loginUserSchema>;
 
-//update user schema
-export const updateUserSchema = z.object({
-  name: z
-    .string({ message: "name must be a string." })
-    .min(2, { message: "name must be at least 2 characters." })
-    .optional(),
-
-  profileAvatar: fileSchema.nullable().optional(),
-
-  username: z
-    .string({ message: "Username must be a string." })
-    .min(2, { message: "Username must be at least 2 characters." })
-    .optional(),
-});
-
-export type updateUserSchemaType = z.infer<typeof updateUserSchema>;
-
 export const changePasswordSchema = z
   .object({
     currentPassword: z.string().min(6),
@@ -53,3 +36,25 @@ export const changePasswordSchema = z
   });
 
 export type ChangePasswordSchemaType = z.infer<typeof changePasswordSchema>;
+
+//setting up a dating profile
+export const onboardingSchema = z.object({
+  displayName: z
+    .string()
+    .min(2, "Name is too short")
+    .max(30, "Name is too long"),
+
+  gender: z.enum(["male", "female", "non-binary"]),
+
+  location: z.string(),
+
+  photos: z.array(fileSchema),
+
+  interestedIn: z.enum(["male", "female", "everyone"]),
+
+  age: z.number().min(18, "You must be at least 18").max(99),
+
+  bio: z.string().max(300).optional(),
+});
+
+export type OnboardingSchemaType = z.infer<typeof onboardingSchema>;
