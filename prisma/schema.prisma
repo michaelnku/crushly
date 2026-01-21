@@ -25,7 +25,22 @@ enum UserRole {
 enum Gender {
   MALE
   FEMALE
-  OTHER
+  NON_BINARY
+}
+
+enum InterestedIn {
+  MALE
+  FEMALE
+  EVERYONE
+}
+
+enum Interest {
+  DATE
+  RELATIONSHIP
+  CHAT
+  FUN
+  FRIENDS
+  ANYTHING
 }
 
 //////////////////////
@@ -109,7 +124,8 @@ model DatingProfile {
   displayName String
 
   gender       Gender
-  interestedIn Gender
+  interestedIn InterestedIn
+  lookingFor   Interest
 
   bio      String?
   age      Int     @default(18)

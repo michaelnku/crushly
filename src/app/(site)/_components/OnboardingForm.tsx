@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { createDatingProfile } from "@/actions/onboarding";
+import { createDatingProfileAction } from "@/actions/onboarding";
 import { OnboardingSchemaType, onboardingSchema } from "@/lib/zodValidation";
 
 export default function OnboardingForm() {
@@ -30,8 +30,9 @@ export default function OnboardingForm() {
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
       displayName: "",
-      gender: "male",
-      interestedIn: "everyone",
+      gender: "MALE",
+      interestedIn: "EVERYONE",
+      lookingFor: "ANYTHING",
       age: 18,
       bio: "",
       location: "",
@@ -42,7 +43,7 @@ export default function OnboardingForm() {
     setError(undefined);
 
     startTransition(async () => {
-      const res = await createDatingProfile(values);
+      const res = await createDatingProfileAction(values);
 
       if (res?.error) {
         setError(res.error);

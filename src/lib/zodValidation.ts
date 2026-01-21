@@ -50,13 +50,21 @@ export const onboardingSchema = z.object({
     .min(2, "Name is too short")
     .max(30, "Name is too long"),
 
-  gender: z.enum(["male", "female", "non-binary"]),
+  gender: z.enum(["MALE", "FEMALE", "NON_BINARY"]),
 
   location: z.string(),
 
   photos: z.array(fileSchema),
 
-  interestedIn: z.enum(["male", "female", "everyone"]),
+  interestedIn: z.enum(["MALE", "FEMALE", "EVERYONE"]),
+  lookingFor: z.enum([
+    "DATE",
+    "RELATIONSHIP",
+    "CHAT",
+    "FUN",
+    "FRIENDS",
+    "ANYTHING",
+  ]),
 
   age: z.number().min(18, "You must be at least 18").max(99),
 

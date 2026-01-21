@@ -3,8 +3,9 @@
 import prisma from "@/lib/prisma";
 import { CurrentUser } from "@/lib/currentUser";
 import { OnboardingSchemaType, onboardingSchema } from "@/lib/zodValidation";
+import { number } from "zod";
 
-export async function createDatingProfile(values: OnboardingSchemaType) {
+export async function createDatingProfileAction(values: OnboardingSchemaType) {
   const parsed = onboardingSchema.safeParse(values);
   if (!parsed.success) {
     return { success: false, error: "Invalid profile data" };
@@ -29,6 +30,9 @@ export async function createDatingProfile(values: OnboardingSchemaType) {
     bio,
     age,
     location,
+    gender,
+    interestedIn,
+    lookingFor,
 
     photos,
   } = parsed.data;
@@ -42,11 +46,16 @@ export async function createDatingProfile(values: OnboardingSchemaType) {
       age,
       location,
 
+      gender,
+      interestedIn,
+      lookingFor,
+
       photos: {
         createMany: {
-          data: photos.map((i) => ({
-            Url: i.url,
-            Key: i.key,
+          data: photos.map((photo, index) => ({
+            photoUrl: photo.url,
+            photoKey: photo.key,
+            order: index,
           })),
         },
       },
