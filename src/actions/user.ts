@@ -26,7 +26,7 @@ export async function changePassword(values: ChangePasswordSchemaType) {
   const credentialsAccount = await prisma.account.findFirst({
     where: {
       userId: user.id,
-      provider: "credentials",
+      providerId: "credentials",
     },
   });
 

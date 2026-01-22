@@ -13,6 +13,83 @@ datasource db {
 }
 
 //////////////////////
+// AUTH MODELS (BetterAuth)
+//////////////////////
+model User {
+  id            String  @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+
+  role UserRole @default(USER)
+
+  createdAt DateTime
+  updatedAt DateTime
+
+  profile DatingProfile?
+
+  crushesSent     Crush[] @relation("CrushesSent")
+  crushesReceived Crush[] @relation("CrushesReceived")
+
+  matchesA Match[] @relation("MatchUserA")
+  matchesB Match[] @relation("MatchUserB")
+
+  messages Message[]
+
+  sessions Session[]
+  accounts Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+//////////////////////
 // ENUMS
 //////////////////////
 
@@ -41,76 +118,6 @@ enum Interest {
   FUN
   FRIENDS
   ANYTHING
-}
-
-//////////////////////
-// AUTH MODELS (BetterAuth)
-//////////////////////
-model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  emailVerified Boolean  @default(false)
-  role          UserRole @default(USER)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  accounts Account[]
-  sessions Session[]
-  profile  DatingProfile?
-
-  crushesSent     Crush[] @relation("CrushesSent")
-  crushesReceived Crush[] @relation("CrushesReceived")
-
-  matchesA Match[] @relation("MatchUserA")
-  matchesB Match[] @relation("MatchUserB")
-
-  messages Message[]
-}
-
-model Account {
-  id                String @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-
-  password String?
-
-  refresh_token String?
-  access_token  String?
-  expires_at    Int?
-  token_type    String?
-  scope         String?
-  id_token      String?
-  session_state String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
-
-  @@id([identifier, token])
 }
 
 //////////////////////
