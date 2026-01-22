@@ -37,4 +37,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  // email: {
+  //   enabled: true,
+  // },
+  // password: {
+  //   enabled: true,
+  //   hash: {
+  //     algorithm: "bcrypt",
+  //   },
+  // },
 });
