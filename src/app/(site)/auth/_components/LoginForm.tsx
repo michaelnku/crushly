@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { authClient } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 import { loginUserSchema, loginUserSchemaType } from "@/lib/zodValidation";
 import SocialLogin from "@/components/auth/SocialLogin";
 
@@ -37,7 +37,7 @@ export default function LoginForm() {
     setError(undefined);
 
     startTransition(async () => {
-      const { error } = await authClient.signIn.email({
+      const { error } = await signIn.email({
         email: values.email,
         password: values.password,
       });

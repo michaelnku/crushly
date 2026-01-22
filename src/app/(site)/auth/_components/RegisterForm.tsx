@@ -24,7 +24,7 @@ import {
   RegisterUserSchemaType,
 } from "@/lib/zodValidation";
 import SocialLogin from "@/components/auth/SocialLogin";
-import { authClient } from "@/lib/auth-client";
+import { signUp } from "@/lib/auth-client";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function RegisterForm() {
     setError(undefined);
 
     startTransition(async () => {
-      const { error } = await authClient.signUp.email({
+      const { error } = await signUp.email({
         name: values.email.split("@")[0],
         email: values.email,
         password: values.password,
