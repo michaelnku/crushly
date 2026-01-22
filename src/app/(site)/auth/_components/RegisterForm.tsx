@@ -23,8 +23,8 @@ import {
   registerUserSchema,
   RegisterUserSchemaType,
 } from "@/lib/zodValidation";
-import { createUserAction } from "@/actions/user";
 import SocialLogin from "@/components/auth/SocialLogin";
+import { authClient } from "@/lib/auth-client";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -44,14 +44,19 @@ export default function RegisterForm() {
     setError(undefined);
 
     startTransition(async () => {
-      const res = await createUserAction(values);
+      const { error } = await authClient.signUp.email({
+        name: values.email.split("@")[0],
+        email: values.email,
+        password: values.password,
+      });
 
-      if (res?.error) {
-        setError(res.error);
+      if (error) {
+        setError(error.message ?? "Unable to create account");
         return;
       }
-      //toast
-      router.push("/auth/login");
+
+      router.push("/onboarding");
+      router.refresh();
     });
   };
 

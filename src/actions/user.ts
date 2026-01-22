@@ -2,50 +2,12 @@
 
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
-import { auth } from "@/lib/auth";
 import { CurrentUser } from "@/lib/currentUser";
 
 import {
-  registerUserSchema,
   changePasswordSchema,
-  RegisterUserSchemaType,
   ChangePasswordSchemaType,
 } from "@/lib/zodValidation";
-import { getUserByEmail } from "@/components/helpers/data";
-
-// create user action
-export const createUserAction = async (values: RegisterUserSchemaType) => {
-  const parsed = registerUserSchema.safeParse(values);
-  if (!parsed.success) {
-    return { success: false, error: "Invalid user data" };
-  }
-
-  const { email, password } = parsed.data;
-
-  const existingUser = await getUserByEmail(email);
-
-  if (existingUser) {
-    return { success: false, error: "Email already in use" };
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 12);
-
-  await prisma.user.create({
-    data: {
-      email,
-      accounts: {
-        create: {
-          type: "credentials",
-          provider: "credentials",
-          providerAccountId: email,
-          password: hashedPassword,
-        },
-      },
-    },
-  });
-
-  return { success: true };
-};
 
 //update user profile action
 

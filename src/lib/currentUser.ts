@@ -1,9 +1,12 @@
 import { normalizeUser } from "@/lib/normalizeUser";
 import prisma from "./prisma";
 import { auth } from "./auth";
+import { headers } from "next/headers";
 
 export const CurrentUser = async () => {
-  const session = await auth.api.getSession();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   if (!session?.user?.id) return null;
 
