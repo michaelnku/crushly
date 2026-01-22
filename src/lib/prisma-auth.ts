@@ -1,10 +1,11 @@
 import { PrismaClient } from "@/generated/prisma";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
-const prismaAuthClient = () =>
-  new PrismaClient({
+const prismaAuthClient = () => {
+  return new PrismaClient({
     accelerateUrl: process.env.ACCELERATE_URL!,
   }).$extends(withAccelerate());
+};
 
 type PrismaAuthClient = ReturnType<typeof prismaAuthClient>;
 
