@@ -4,9 +4,11 @@ import { auth } from "./auth";
 import { headers } from "next/headers";
 
 export const CurrentUser = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  // const session = await auth.api.getSession({
+  //   headers: await headers(),
+  // });
+
+  const { data: session } = await aut;
 
   if (!session?.user?.id) return null;
 
