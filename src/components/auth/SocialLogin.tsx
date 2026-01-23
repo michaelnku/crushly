@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 
-import { authClient } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth-client";
 
 export default function SocialLogin() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function SocialLogin() {
   const loginWithGoogle = async () => {
     setLoading(true);
 
-    await authClient.signIn.social({
+    await signIn.social({
       provider: "google",
       callbackURL: "/discover",
     });

@@ -34,16 +34,17 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+
   emailAndPassword: {
     enabled: true,
   },
-  // email: {
-  //   enabled: true,
-  // },
-  // password: {
-  //   enabled: true,
-  //   hash: {
-  //     algorithm: "bcrypt",
-  //   },
-  // },
+
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
+
+  session: { cookieName: "session", expiresIn: 60 * 60 * 24 * 7 },
 });

@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma";
 import { CurrentUser } from "@/lib/currentUser";
 import { OnboardingSchemaType, onboardingSchema } from "@/lib/zodValidation";
-import { number } from "zod";
 
 export async function createDatingProfileAction(values: OnboardingSchemaType) {
   const parsed = onboardingSchema.safeParse(values);
