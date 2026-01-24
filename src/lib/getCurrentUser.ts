@@ -3,7 +3,7 @@ import prisma from "./prisma";
 import { auth } from "./auth";
 import { headers } from "next/headers";
 
-export const CurrentUser = async () => {
+export const getCurrentUser = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -16,12 +16,12 @@ export const CurrentUser = async () => {
   return normalizeUser(user);
 };
 
-export const CurrentUserId = async () => {
-  const user = await CurrentUser();
+export const getCurrentUserId = async () => {
+  const user = await getCurrentUser();
   return user?.id ?? null;
 };
 
-export const CurrentRole = async () => {
-  const user = await CurrentUser();
+export const getCurrentRole = async () => {
+  const user = await getCurrentUser();
   return user?.role ?? null;
 };

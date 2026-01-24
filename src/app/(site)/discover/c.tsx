@@ -1,6 +1,6 @@
 import { requireProfile } from "@/lib/requireProfile";
 
-import { CurrentUser } from "@/lib/currentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
 // export default async function DiscoverPage() {
 //   await requireProfile();

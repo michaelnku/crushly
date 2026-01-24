@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { CurrentUser } from "@/lib/currentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import OnboardingForm from "../_components/OnboardingForm";
 
 export default async function OnboardingPage() {
-  const user = await CurrentUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

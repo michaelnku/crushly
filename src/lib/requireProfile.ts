@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { CurrentUser } from "@/lib/currentUser";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 
 export async function requireProfile() {
-  const user = await CurrentUser();
+  const user = await getCurrentUser();
 
   if (!user) {
     redirect("/auth/login");

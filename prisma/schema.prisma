@@ -129,15 +129,17 @@ model DatingProfile {
   id     String @id @default(cuid())
   userId String @unique
 
-  displayName String
+  displayName String?
 
-  gender       Gender
-  interestedIn InterestedIn
-  lookingFor   Interest
+  gender       Gender?
+  interestedIn InterestedIn?
+  lookingFor   Interest?
 
   bio      String?
-  age      Int     @default(18)
-  location String
+  age      Int?    @default(18)
+  location String?
+
+  isCompleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

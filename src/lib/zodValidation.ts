@@ -44,18 +44,16 @@ export const changePasswordSchema = z
 export type ChangePasswordSchemaType = z.infer<typeof changePasswordSchema>;
 
 //setting up a dating profile
-export const onboardingSchema = z.object({
-  displayName: z
-    .string()
-    .min(2, "Name is too short")
-    .max(30, "Name is too long"),
+export const onboardingBasicsSchema = z.object({
+  displayName: z.string().min(2).max(30),
+  age: z.number().min(18).max(99),
+  bio: z.string().max(300).optional(),
+});
 
+export type OnboardingBasicsSchemaType = z.infer<typeof onboardingBasicsSchema>;
+
+export const onboardingPreferencesSchema = z.object({
   gender: z.enum(["MALE", "FEMALE", "NON_BINARY"]),
-
-  location: z.string(),
-
-  photos: z.array(fileSchema),
-
   interestedIn: z.enum(["MALE", "FEMALE", "EVERYONE"]),
   lookingFor: z.enum([
     "DATE",
@@ -65,10 +63,29 @@ export const onboardingSchema = z.object({
     "FRIENDS",
     "ANYTHING",
   ]),
-
-  age: z.number().min(18, "You must be at least 18").max(99),
-
-  bio: z.string().max(300).optional(),
 });
 
-export type OnboardingSchemaType = z.infer<typeof onboardingSchema>;
+export type OnboardingPreferencesSchemaType = z.infer<
+  typeof onboardingPreferencesSchema
+>;
+
+export const onboardingLocationSchema = z.object({
+  location: z.string().min(2),
+});
+
+export type OnboardingLocationSchemaType = z.infer<
+  typeof onboardingLocationSchema
+>;
+
+export const onboardingPhotosSchema = z.object({
+  photos: z
+    .array(
+      z.object({
+        url: z.string().url(),
+        key: z.string(),
+      })
+    )
+    .min(1, "Upload at least one photo"),
+});
+
+export type OnboardingPhotosSchemaType = z.infer<typeof onboardingPhotosSchema>;
