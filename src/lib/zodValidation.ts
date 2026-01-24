@@ -70,7 +70,10 @@ export type OnboardingPreferencesSchemaType = z.infer<
 >;
 
 export const onboardingLocationSchema = z.object({
-  location: z.string().min(2),
+  location: z
+    .string()
+    .min(2, "Location is required")
+    .max(100, "Location is too long"),
 });
 
 export type OnboardingLocationSchemaType = z.infer<
