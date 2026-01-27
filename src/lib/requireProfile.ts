@@ -11,11 +11,10 @@ export async function requireProfile() {
 
   const profile = await prisma.datingProfile.findUnique({
     where: { userId: user.id },
-    select: { id: true },
   });
 
-  if (!profile) {
-    redirect("/onboarding");
+  if (!profile || !profile.isCompleted) {
+    redirect("/onboarding/basics");
   }
 
   return { user, profile };

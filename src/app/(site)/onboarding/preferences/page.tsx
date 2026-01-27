@@ -26,6 +26,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+
 import {
   onboardingPreferencesSchema,
   OnboardingPreferencesSchemaType,
@@ -56,10 +57,11 @@ export default function OnboardingPreferencesPage() {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-crushly px-4">
-      <div className="w-full max-w-lg space-y-6 rounded-2xl border border-crushly bg-crushly-soft p-8 shadow-xl">
+      <div className="w-full max-w-lg space-y-7 rounded-2xl border border-crushly bg-crushly-soft p-8 shadow-xl">
         {/* Progress */}
         <OnboardingProgress step={2} totalSteps={4} />
 
+        {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-3xl font-bold text-crushly-primary">
             Your preferences 💫
@@ -70,26 +72,40 @@ export default function OnboardingPreferencesPage() {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* Gender */}
             <FormField
               control={form.control}
               name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your gender</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Your gender
+                  </FormLabel>
+
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue />
+                      <SelectTrigger
+                        className="
+                          h-11 rounded-lg
+                          bg-transparent
+                          border border-crushly
+                          text-crushly-primary
+                          focus:ring-2
+                          focus:ring-[var(--crushly-accent)]
+                        "
+                      >
+                        <SelectValue placeholder="Select your gender" />
                       </SelectTrigger>
-                      <SelectContent>
+
+                      <SelectContent className="bg-crushly-soft border border-crushly">
                         <SelectItem value="MALE">Male</SelectItem>
                         <SelectItem value="FEMALE">Female</SelectItem>
                         <SelectItem value="NON_BINARY">Non-binary</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -101,19 +117,33 @@ export default function OnboardingPreferencesPage() {
               name="interestedIn"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Interested in</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Interested in
+                  </FormLabel>
+
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue />
+                      <SelectTrigger
+                        className="
+                          h-11 rounded-lg
+                          bg-transparent
+                          border border-crushly
+                          text-crushly-primary
+                          focus:ring-2
+                          focus:ring-[var(--crushly-accent)]
+                        "
+                      >
+                        <SelectValue placeholder="Who are you into?" />
                       </SelectTrigger>
-                      <SelectContent>
+
+                      <SelectContent className="bg-crushly-soft border border-crushly">
                         <SelectItem value="MALE">Men</SelectItem>
                         <SelectItem value="FEMALE">Women</SelectItem>
                         <SelectItem value="EVERYONE">Everyone</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -125,13 +155,26 @@ export default function OnboardingPreferencesPage() {
               name="lookingFor"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Looking for</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Looking for
+                  </FormLabel>
+
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger>
-                        <SelectValue />
+                      <SelectTrigger
+                        className="
+                          h-11 rounded-lg
+                          bg-transparent
+                          border border-crushly
+                          text-crushly-primary
+                          focus:ring-2
+                          focus:ring-[var(--crushly-accent)]
+                        "
+                      >
+                        <SelectValue placeholder="What are you looking for?" />
                       </SelectTrigger>
-                      <SelectContent>
+
+                      <SelectContent className="bg-crushly-soft border border-crushly">
                         <SelectItem value="DATE">Date</SelectItem>
                         <SelectItem value="RELATIONSHIP">
                           Relationship
@@ -143,15 +186,26 @@ export default function OnboardingPreferencesPage() {
                       </SelectContent>
                     </Select>
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button type="submit" disabled={isPending} className="w-full">
+            {/* Submit */}
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="
+                w-full h-11 rounded-lg font-semibold text-white
+                bg-crushly-gradient
+                hover:opacity-90 transition
+                disabled:opacity-70
+              "
+            >
               {isPending ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                <span className="inline-flex items-center gap-2">
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   Saving…
                 </span>
               ) : (

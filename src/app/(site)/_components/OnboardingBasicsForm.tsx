@@ -1,104 +1,92 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { OnboardingProgress } from "@/components/onboarding/onboarding-progress";
+
 import {
   Form,
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Loader2 } from "lucide-react";
-import { createDatingProfileAction } from "@/actions/onboarding";
-import { OnboardingSchemaType, onboardingSchema } from "@/lib/zodValidation";
+import { Loader2 } from "lucide-react";
 
-export default function OnboardingForm() {
+import { saveOnboardingBasics } from "@/actions/onboarding";
+import {
+  OnboardingBasicsSchemaType,
+  onboardingBasicsSchema,
+} from "@/lib/zodValidation";
+
+export default function OnboardingBasicsForm() {
   const router = useRouter();
-  const [error, setError] = useState<string | undefined>();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<OnboardingSchemaType>({
-    resolver: zodResolver(onboardingSchema),
+  const form = useForm<OnboardingBasicsSchemaType>({
+    resolver: zodResolver(onboardingBasicsSchema),
     defaultValues: {
       displayName: "",
-      gender: "MALE",
-      interestedIn: "EVERYONE",
-      lookingFor: "ANYTHING",
       age: 18,
       bio: "",
-      location: "",
     },
   });
 
-  const handleSubmit = (values: OnboardingSchemaType) => {
-    setError(undefined);
-
+  const onSubmit = (values: OnboardingBasicsSchemaType) => {
     startTransition(async () => {
-      const res = await createDatingProfileAction(values);
-
-      if (res?.error) {
-        setError(res.error);
-        return;
+      const res = await saveOnboardingBasics(values);
+      if (!res?.error) {
+        router.push("/onboarding/preferences");
       }
-
-      router.push("/discover");
-      router.refresh();
     });
   };
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-crushly px-4">
-      <div className="w-full max-w-lg bg-crushly-soft border border-crushly rounded-2xl shadow-xl p-8 space-y-7">
-        {/* Error */}
-        {error && (
-          <Alert className="border border-[var(--crushly-error)] bg-[rgba(255,107,129,0.08)] text-[var(--crushly-error)]">
-            <AlertCircle className="w-4 h-4" />
-            <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        )}
+      <div className="w-full max-w-lg space-y-7 rounded-2xl border border-crushly bg-crushly-soft p-8 shadow-xl">
+        {/* Progress */}
+        <OnboardingProgress step={1} totalSteps={4} />
 
         {/* Header */}
         <div className="text-center space-y-1">
           <h1 className="text-3xl font-bold text-crushly-primary">
-            Complete your profile 💘
+            Let’s start with the basics 💘
           </h1>
           <p className="text-sm text-crushly-muted">
-            Tell us a bit about yourself
+            This helps people recognize you at first glance
           </p>
         </div>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-5"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             {/* Display Name */}
             <FormField
               control={form.control}
               name="displayName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-crushly-secondary">
+                  <FormLabel className="text-sm text-crushly-secondary">
                     Display name
                   </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
+                      placeholder="What should we call you?"
                       className="
                         h-11 rounded-lg bg-transparent
                         border border-crushly
                         text-crushly-primary
                         placeholder:text-crushly-muted
-                        focus:ring-2 focus:ring-[var(--crushly-accent)]
+                        focus:ring-2
+                        focus:ring-[var(--crushly-accent)]
+                        focus:border-[var(--crushly-accent)]
                       "
                     />
                   </FormControl>
@@ -113,7 +101,9 @@ export default function OnboardingForm() {
               name="age"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-crushly-secondary">Age</FormLabel>
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Age
+                  </FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -123,7 +113,9 @@ export default function OnboardingForm() {
                         h-11 rounded-lg bg-transparent
                         border border-crushly
                         text-crushly-primary
-                        focus:ring-2 focus:ring-[var(--crushly-accent)]
+                        focus:ring-2
+                        focus:ring-[var(--crushly-accent)]
+                        focus:border-[var(--crushly-accent)]
                       "
                     />
                   </FormControl>
@@ -138,19 +130,25 @@ export default function OnboardingForm() {
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-crushly-secondary">
-                    Bio (optional)
+                  <FormLabel className="text-sm text-crushly-secondary">
+                    Bio{" "}
+                    <span className="text-xs text-crushly-muted">
+                      (optional)
+                    </span>
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      {...field}
                       rows={4}
+                      {...field}
+                      placeholder="A little about you…"
                       className="
                         rounded-lg bg-transparent
                         border border-crushly
                         text-crushly-primary
                         placeholder:text-crushly-muted
-                        focus:ring-2 focus:ring-[var(--crushly-accent)]
+                        focus:ring-2
+                        focus:ring-[var(--crushly-accent)]
+                        focus:border-[var(--crushly-accent)]
                       "
                     />
                   </FormControl>
@@ -172,8 +170,8 @@ export default function OnboardingForm() {
             >
               {isPending ? (
                 <span className="inline-flex items-center gap-2">
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Saving profile…
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Saving…
                 </span>
               ) : (
                 "Continue"
