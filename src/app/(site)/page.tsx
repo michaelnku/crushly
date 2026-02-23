@@ -1,7 +1,5 @@
-import React from "react";
+import { requireProfile } from "@/lib/requireProfile";
 
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
+export default async function Home() {
+  await requireProfile();
+}
