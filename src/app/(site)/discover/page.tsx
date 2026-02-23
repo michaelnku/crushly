@@ -1,15 +1,11 @@
 import { redirect } from "next/navigation";
 import DiscoverUI from "@/components/discover/DiscoverUI";
-import { getCurrentUser } from "@/lib/getCurrentUser";
 import prisma from "@/lib/prisma";
+import { requireProfile } from "@/lib/requireProfile";
 
 export default async function DiscoverPage() {
-  const user = await getCurrentUser();
+  const { user, profile } = await requireProfile();
   if (!user) redirect("/auth/login");
-
-  const profile = await prisma.datingProfile.findUnique({
-    where: { userId: user.id },
-  });
 
   if (!profile || !profile.isCompleted) {
     redirect("/onboarding/basics");
