@@ -1,8 +1,8 @@
 import { SessionUser, ProfileDTO } from "@/lib/types";
-import prisma from "./prisma";
+import { prisma } from "./prisma";
 
 export async function normalizeUser(
-  sessionUser: SessionUser | undefined | null
+  sessionUser: SessionUser | undefined | null,
 ): Promise<ProfileDTO | null> {
   if (!sessionUser?.email) return null;
 

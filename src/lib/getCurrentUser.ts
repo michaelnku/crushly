@@ -1,5 +1,5 @@
 import { normalizeUser } from "@/lib/normalizeUser";
-import prisma from "./prisma";
+import { prisma } from "./prisma";
 import { auth } from "./auth";
 import { headers } from "next/headers";
 

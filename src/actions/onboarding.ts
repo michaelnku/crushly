@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import {
   onboardingBasicsSchema,
@@ -52,7 +52,7 @@ export async function saveOnboardingBasics(values: OnboardingBasicsSchemaType) {
 }
 
 export async function saveOnboardingPreferences(
-  values: OnboardingPreferencesSchemaType
+  values: OnboardingPreferencesSchemaType,
 ) {
   const user = await getCurrentUser();
   if (!user) return { error: "Unauthorized" };
@@ -69,7 +69,7 @@ export async function saveOnboardingPreferences(
 }
 
 export async function saveOnboardingLocation(
-  values: OnboardingLocationSchemaType
+  values: OnboardingLocationSchemaType,
 ) {
   const user = await getCurrentUser();
   if (!user) return { error: "Unauthorized" };

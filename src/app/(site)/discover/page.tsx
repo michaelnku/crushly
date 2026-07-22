@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import DiscoverUI from "@/components/discover/DiscoverUI";
-import prisma from "@/lib/prisma";
 import { requireProfile } from "@/lib/requireProfile";
 
 export default async function DiscoverPage() {

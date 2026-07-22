@@ -3,7 +3,6 @@
 
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "tailwindcss";
 
 @import "uploadthing/tw/v4";
 
@@ -80,6 +79,40 @@
   background: var(--crushly-gradient-love);
 }
 
+/* ---------- Crushly Premium Utilities ---------- */
+
+.bg-crushly-card {
+  background: var(--crushly-card);
+}
+
+.bg-crushly-glass {
+  background: var(--crushly-glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.bg-crushly-radial {
+  background: var(--crushly-gradient-radial);
+}
+
+.text-love {
+  color: var(--crushly-love);
+}
+
+.text-accent {
+  color: var(--crushly-accent);
+}
+
+.shadow-crushly {
+  box-shadow:
+    0 0 30px rgba(124, 124, 255, 0.18),
+    0 0 80px rgba(124, 124, 255, 0.12);
+}
+
+.border-crushly-soft {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
 :root {
   /* Brand */
   --crushly-primary: #1b1f3b; /* Midnight Indigo */
@@ -139,6 +172,29 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Crushly Premium Theme */
+  --crushly-glow: #8a7dff;
+  --crushly-glow-soft: #a896ff;
+  --crushly-glow-love: #ff6b81;
+
+  --crushly-card: #171b3c;
+  --crushly-glass: rgba(255, 255, 255, 0.05);
+
+  --crushly-shadow: rgba(124, 124, 255, 0.25);
+
+  --crushly-gradient: linear-gradient(
+    135deg,
+    var(--crushly-accent),
+    var(--crushly-love)
+  );
+
+  --crushly-gradient-radial: radial-gradient(
+    circle,
+    rgba(124, 124, 255, 0.45) 0%,
+    rgba(255, 107, 129, 0.18) 40%,
+    transparent 75%
+  );
 }
 
 .dark {
@@ -182,4 +238,81 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ---------- Crushly Animations ---------- */
+
+@keyframes crushly-float {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(0, 35px, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes crushly-pulse {
+  0% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes crushly-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Neon Background ---------- */
+
+.neon-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(140px);
+  pointer-events: none;
+  animation: crushly-float 18s ease-in-out infinite;
+  opacity: 0.55;
+}
+
+.neon-indigo {
+  background: var(--crushly-accent);
+}
+
+.neon-pink {
+  background: var(--crushly-love);
+}
+
+.neon-violet {
+  background: var(--crushly-glow);
+}
+
+/* ---------- Noise Overlay ---------- */
+
+.noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 20%, white 1px, transparent 1px),
+    radial-gradient(circle at 80% 60%, white 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, white 1px, transparent 1px);
+  background-size: 180px 180px;
 }

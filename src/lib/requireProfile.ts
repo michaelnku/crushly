@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { prisma } from "./prisma";
 
 export async function requireProfile() {
   const user = await getCurrentUser();

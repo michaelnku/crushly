@@ -11,14 +11,14 @@ import {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // BetterAuth session cookie (default name)
+  // BetterAuth session cookie
   const isLoggedIn = Boolean(
     req.cookies.get("better-auth.session_token")?.value ??
-      req.cookies.get("better-auth.session")?.value
+    req.cookies.get("better-auth.session")?.value,
   );
 
   const isPublicRoute = publicRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route)
+    (route) => pathname === route || pathname.startsWith(route),
   );
 
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
