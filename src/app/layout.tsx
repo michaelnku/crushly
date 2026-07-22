@@ -21,6 +21,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = getCrushlyMetadata();
 
+<meta name="apple-mobile-web-app-title" content="Crushly" />;
+
 export default function RootLayout({
   children,
 }: Readonly<{

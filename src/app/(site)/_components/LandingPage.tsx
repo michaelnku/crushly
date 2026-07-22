@@ -9,6 +9,7 @@ import {
 import PhoneMockup from "./PhoneMockup";
 
 import type { LucideIcon } from "lucide-react";
+import Image from "next/image";
 
 const stats: {
   title: string;
@@ -86,17 +87,19 @@ export function LandingPage() {
 
       <header className="relative z-20 mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center">
-            {/* Glow */}
-            <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-md opacity-70" />
+          <div className="relative flex h-11 w-11 items-center justify-center">
+            {/* Soft Glow */}
+            <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-xl opacity-50" />
 
-            {/* Icon */}
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-crushly-gradient shadow-crushly">
-              <Heart
-                className="h-5 w-5 fill-white text-white"
-                strokeWidth={2.4}
-              />
-            </div>
+            {/* Logo */}
+            <Image
+              src="/logo.png"
+              alt="Crushly"
+              width={44}
+              height={44}
+              priority
+              className="relative z-10 h-11 w-11 rounded-xl object-contain"
+            />
           </div>
 
           <span className="text-xl font-black tracking-tight">Crushly</span>

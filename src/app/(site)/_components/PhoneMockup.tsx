@@ -82,24 +82,58 @@ export default function PhoneMockup() {
         {/* Header */}
 
         <div className="mt-6 flex items-center justify-between px-5">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
             <div className="relative flex h-10 w-10 items-center justify-center">
-              {/* Glow */}
-              <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-md opacity-70" />
+              {/* Soft Glow */}
+              <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-xl opacity-50" />
 
-              {/* Icon */}
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-crushly-gradient shadow-crushly">
-                <Heart
-                  className="h-5 w-5 fill-white text-white"
-                  strokeWidth={2.4}
-                />
-              </div>
+              {/* Logo */}
+              <Image
+                src="/logo.png"
+                alt="Crushly"
+                width={16}
+                height={16}
+                priority
+                className="relative z-10 h-9 w-9 rounded-xl object-contain"
+              />
             </div>
 
             <span className="text-xl font-black tracking-tight">Crushly</span>
           </div>
 
-          <Bell className="text-crushly-secondary" />
+          <div className="relative">
+            <Bell size={22} className="animate-bell text-crushly-secondary" />
+
+            {/* Pulse */}
+            <span
+              className="
+      absolute
+      -right-1
+      -top-1
+      h-3
+      w-3
+      rounded-full
+      bg-red-500/40
+      animate-ping
+    "
+            />
+
+            {/* Dot */}
+            <span
+              className="
+      absolute
+      -right-1
+      -top-1
+      z-10
+      h-3
+      w-3
+      rounded-full
+      bg-red-500
+      ring-2
+      ring-crushly-card
+    "
+            />
+          </div>
         </div>
 
         {/* Profile Card */}
