@@ -10,6 +10,7 @@ import PhoneMockup from "./PhoneMockup";
 
 import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
+import MobileMenu from "./MobileMenu";
 
 const stats: {
   title: string;
@@ -43,41 +44,46 @@ export function LandingPage() {
     <main className="relative isolate overflow-hidden bg-crushly min-h-screen text-crushly-primary">
       {/* ---------- Ambient Glow ---------- */}
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Ambient Lights */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
           className="
-          neon-blob
-          neon-indigo
-          h-[700px]
-          w-[700px]
-          left-1/2
-          top-20
-          -translate-x-1/2
-        "
+      absolute
+      left-1/2
+      top-28
+      h-[380px]
+      w-[380px]
+      -translate-x-1/2
+      rounded-full
+      bg-fuchsia-500/18
+      blur-[90px]
+    "
         />
 
         <div
           className="
-          neon-blob
-          neon-pink
-          h-[500px]
-          w-[500px]
-          left-10
-          top-[35%]
-        "
-          style={{ animationDelay: "-7s" }}
+      absolute
+      right-12
+      top-44
+      h-[260px]
+      w-[260px]
+      rounded-full
+      bg-violet-500/20
+      blur-[80px]
+    "
         />
 
         <div
           className="
-          neon-blob
-          neon-violet
-          h-[520px]
-          w-[520px]
-          right-0
-          top-32
-        "
-          style={{ animationDelay: "-13s" }}
+      absolute
+      left-8
+      bottom-24
+      h-[220px]
+      w-[220px]
+      rounded-full
+      bg-pink-500/16
+      blur-[70px]
+    "
         />
 
         <div className="noise" />
@@ -85,13 +91,26 @@ export function LandingPage() {
 
       {/* NAV */}
 
-      <header className="relative z-20 mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <header
+        className="
+    relative
+    z-20
+    mx-auto
+    flex
+    max-w-7xl
+    items-center
+    justify-between
+    px-5
+    py-6
+    md:px-8
+  "
+      >
+        {/* Logo */}
+
         <div className="flex items-center gap-3">
           <div className="relative flex h-11 w-11 items-center justify-center">
-            {/* Soft Glow */}
             <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-xl opacity-50" />
 
-            {/* Logo */}
             <Image
               src="/logo.png"
               alt="Crushly"
@@ -105,19 +124,19 @@ export function LandingPage() {
           <span className="text-xl font-black tracking-tight">Crushly</span>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Desktop */}
+
+        <div className="hidden items-center gap-3 md:flex">
           <Link
             href="/auth/login"
             className="
-            rounded-full
-            border
-            border-crushly-soft
-            bg-crushly-glass
-            px-5
-            py-2.5
-            transition
-            hover:border-white/20
-          "
+        rounded-full
+        border
+        border-crushly-soft
+        bg-crushly-glass
+        px-5
+        py-2.5
+      "
           >
             Sign In
           </Link>
@@ -125,27 +144,57 @@ export function LandingPage() {
           <Link
             href="/auth/register"
             className="
-            rounded-full
-            bg-crushly-gradient
-            px-6
-            py-2.5
-            font-semibold
-            shadow-crushly
-            transition
-            hover:scale-105
-          "
+        rounded-full
+        bg-crushly-gradient
+        px-6
+        py-2.5
+        font-semibold
+        shadow-crushly
+      "
           >
             Get Started
           </Link>
+        </div>
+
+        {/* Mobile */}
+
+        <div className="md:hidden">
+          <MobileMenu />
         </div>
       </header>
 
       {/* HERO */}
 
-      <section className="relative z-20 mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-16 px-6 py-16 lg:grid-cols-[1.05fr_.95fr]">
-        {" "}
+      <section
+        className="
+    relative
+    z-20
+    mx-auto
+    grid
+    max-w-7xl
+    items-center
+    gap-16
+
+    px-6
+    py-12
+
+    lg:min-h-[calc(100vh-80px)]
+    lg:grid-cols-[1.05fr_.95fr]
+
+    xl:gap-24
+  "
+      >
         {/* LEFT */}
-        <div className="max-w-2xl">
+        <div
+          className="
+    order-2
+    text-center
+
+    lg:order-1
+    lg:text-left
+    lg:max-w-2xl
+  "
+        >
           {/* Eyebrow */}
 
           <div
@@ -174,14 +223,15 @@ export function LandingPage() {
 
           <h1
             className="
-      mt-8
-      max-w-3xl
-      text-5xl
-      font-black
-      tracking-[-0.05em]
-      leading-[0.92]
-      md:text-6xl
-      lg:text-7xl
+        mt-8
+        max-w-3xl
+        font-black
+        tracking-[-0.05em]
+        leading-[0.92]
+        text-4xl
+        sm:text-5xl
+        lg:text-6xl
+        xl:text-7xl
     "
           >
             Find someone looking for the same thing you are.
@@ -189,7 +239,7 @@ export function LandingPage() {
 
           {/* Description */}
 
-          <p className="mt-8 max-w-xl text-lg leading-8 text-crushly-secondary md:text-xl">
+          <p className="mt-8 max-w-xl text-base sm:text-lg md:text-xl leading-8 text-crushly-secondary md:text-xl">
             Whether you're searching for a serious relationship, something
             casual, meaningful friendships, or simply new people to meet,
             Crushly helps you connect with people who share your intentions from
@@ -198,7 +248,17 @@ export function LandingPage() {
 
           {/* CTA */}
 
-          <div className="mt-12 flex flex-wrap gap-4">
+          <div
+            className="
+            mt-12
+            flex
+            flex-col
+            gap-4
+            sm:flex-row
+            sm:justify-center
+            lg:justify-start
+        "
+          >
             <Link
               href="/auth/register"
               className="
@@ -268,7 +328,15 @@ export function LandingPage() {
           </div>
         </div>
         {/* RIGHT */}
-        <div className="relative flex justify-center">
+        <div
+          className="
+    order-1
+    flex
+    justify-center
+
+    lg:order-2
+  "
+        >
           <div
             className="
             absolute

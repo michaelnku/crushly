@@ -58,7 +58,10 @@ export default function PhoneMockup() {
         className="
         relative
         h-[700px]
-        w-[340px]
+        w-[280px]
+        sm:w-[320px]
+        lg:w-[340px]
+        xl:w-[360px]
         overflow-hidden
         rounded-[42px]
         border
