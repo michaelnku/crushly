@@ -1,127 +1,88 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
-const MobileMenu = () => {
-  const [open, setOpen] = useState(false);
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
-
+export default function MobileMenu() {
   return (
-    <>
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open menu"
+    <Sheet>
+      <SheetTrigger asChild>
+        <button
+          className="
+            flex
+            h-11
+            w-11
+            items-center
+            justify-center
+            rounded-xl
+            border
+            border-crushly-soft
+            bg-crushly-glass
+            backdrop-blur-xl
+          "
+        >
+          <Menu size={22} />
+        </button>
+      </SheetTrigger>
+
+      <SheetContent
+        side="right"
         className="
-          flex
-          h-11
-          w-11
-          items-center
-          justify-center
-          rounded-xl
-          border
+          border-l
           border-crushly-soft
-          bg-crushly-glass
-          backdrop-blur-xl
-          transition
-          hover:border-white/20
+          bg-[#0f1224]/95
+          backdrop-blur-2xl
+          text-white
+          px-6
+          py-4
         "
       >
-        <Menu size={22} />
-      </button>
+        <SheetHeader>
+          <SheetTitle className="text-left text-white">Crushly</SheetTitle>
+        </SheetHeader>
 
-      {open && (
-        <>
-          {/* Backdrop */}
-
-          <button
-            onClick={() => setOpen(false)}
-            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          />
-
-          {/* Panel */}
-
-          <div
+        <div className="mt-8 space-y-4">
+          <Link
+            href="/auth/login"
             className="
-              fixed
-              right-5
-              top-5
-              z-50
-              w-72
-              rounded-3xl
+              flex
+              justify-center
+              rounded-full
               border
               border-crushly-soft
               bg-crushly-glass
-              p-6
-              backdrop-blur-2xl
-              shadow-[0_25px_80px_rgba(0,0,0,.45)]
+              px-5
+              py-3
             "
           >
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-lg">Menu</span>
+            Sign In
+          </Link>
 
-              <button
-                onClick={() => setOpen(false)}
-                className="
-                  rounded-xl
-                  p-2
-                  transition
-                  hover:bg-white/10
-                "
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="mt-8 space-y-3">
-              <Link
-                href="/auth/login"
-                onClick={() => setOpen(false)}
-                className="
-                  flex
-                  justify-center
-                  rounded-full
-                  border
-                  border-crushly-soft
-                  bg-crushly-glass
-                  px-5
-                  py-3
-                  font-medium
-                "
-              >
-                Sign In
-              </Link>
-
-              <Link
-                href="/auth/register"
-                onClick={() => setOpen(false)}
-                className="
-                  flex
-                  justify-center
-                  rounded-full
-                  bg-crushly-gradient
-                  px-5
-                  py-3
-                  font-semibold
-                  shadow-crushly
-                "
-              >
-                Get Started
-              </Link>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+          <Link
+            href="/auth/register"
+            className="
+              flex
+              justify-center
+              rounded-full
+              bg-crushly-gradient
+              px-5
+              py-3
+              font-semibold
+              shadow-crushly
+            "
+          >
+            Get Started
+          </Link>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
-};
-
-export default MobileMenu;
+}

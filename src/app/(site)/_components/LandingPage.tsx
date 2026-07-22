@@ -158,7 +158,7 @@ export function LandingPage() {
 
         {/* Mobile */}
 
-        <div className="md:hidden">
+        <div className="md:hidden z-100">
           <MobileMenu />
         </div>
       </header>

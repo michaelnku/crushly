@@ -65,6 +65,7 @@ export default function PhoneMockup() {
         overflow-hidden
         rounded-[42px]
         border
+        
         border-white/10
         bg-crushly-card
         shadow-[0_30px_80px_rgba(0,0,0,.45)]
