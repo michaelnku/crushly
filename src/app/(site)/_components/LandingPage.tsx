@@ -131,86 +131,125 @@ export function LandingPage() {
       <section className="relative z-20 mx-auto grid min-h-[calc(100vh-80px)] max-w-7xl items-center gap-16 px-6 py-16 lg:grid-cols-[1.05fr_.95fr]">
         {" "}
         {/* LEFT */}
-        <div>
+        <div className="max-w-2xl">
+          {/* Eyebrow */}
+
           <div
             className="
-            inline-flex
-            items-center
-            rounded-full
-            border
-            border-crushly-soft
-            bg-crushly-glass
-            px-4
-            py-2
-            text-sm
-          "
+      inline-flex
+      items-center
+      gap-2
+      rounded-full
+      border
+      border-white/10
+      bg-white/5
+      px-5
+      py-2.5
+      backdrop-blur-xl
+      shadow-crushly
+    "
           >
-            ❤️ Real people. Real chemistry.
+            <Heart className="h-4 w-4 text-love" fill="currentColor" />
+
+            <span className="text-sm font-medium text-crushly-secondary">
+              Built for meaningful connections, not endless swiping.
+            </span>
           </div>
 
-          <h1 className="mt-8 text-5xl font-black leading-[1.05] md:text-6xl lg:text-7xl">
-            Meet people
-            <span className="block bg-crushly-gradient bg-clip-text text-transparent">
-              looking for
-            </span>
-            exactly what you are.
+          {/* Heading */}
+
+          <h1
+            className="
+      mt-8
+      max-w-3xl
+      text-5xl
+      font-black
+      tracking-[-0.05em]
+      leading-[0.92]
+      md:text-6xl
+      lg:text-7xl
+    "
+          >
+            Find someone looking for the same thing you are.
           </h1>
 
-          <p className="mt-8 max-w-xl text-lg leading-8 text-crushly-secondary">
-            Whether you're looking for love, something casual, new friendships
-            or long-term relationships, Crushly connects you with people looking
-            for the same thing.
+          {/* Description */}
+
+          <p className="mt-8 max-w-xl text-lg leading-8 text-crushly-secondary md:text-xl">
+            Whether you're searching for a serious relationship, something
+            casual, meaningful friendships, or simply new people to meet,
+            Crushly helps you connect with people who share your intentions from
+            the very beginning.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          {/* CTA */}
+
+          <div className="mt-12 flex flex-wrap gap-4">
             <Link
               href="/auth/register"
               className="
-              flex
-              items-center
-              gap-2
-              rounded-full
-              bg-crushly-gradient
-              px-8
-              py-4
-              font-semibold
-              shadow-crushly
-              transition
-              hover:scale-105
-            "
+        group
+        inline-flex
+        items-center
+        gap-3
+        rounded-full
+        bg-crushly-gradient
+        px-8
+        py-4
+        text-base
+        font-semibold
+        shadow-crushly
+        transition-all
+        duration-300
+        hover:-translate-y-1
+        hover:shadow-[0_20px_60px_rgba(255,107,129,.35)]
+      "
             >
-              Join Free
-              <ArrowRight size={18} />
+              Start Matching
+              <ArrowRight
+                size={18}
+                className="transition-transform group-hover:translate-x-1"
+              />
             </Link>
 
             <Link
               href="/auth/login"
               className="
-              rounded-full
-              border
-              border-crushly-soft
-              bg-crushly-glass
-              px-8
-              py-4
-            "
+        inline-flex
+        items-center
+        rounded-full
+        border
+        border-white/10
+        bg-white/5
+        px-8
+        py-4
+        font-medium
+        backdrop-blur-xl
+        transition-all
+        duration-300
+        hover:bg-white/10
+      "
             >
               Sign In
             </Link>
           </div>
-          <div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-crushly-secondary">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-love" />
+
+          {/* Trust Row */}
+
+          <div className="mt-10 flex flex-wrap gap-x-8 gap-y-4">
+            <div className="flex items-center gap-2 text-sm text-crushly-secondary">
+              <ShieldCheck className="h-5 w-5 text-love" strokeWidth={2.2} />
               Verified Profiles
             </div>
 
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-accent" />
-              Smart Matching
+            <div className="flex items-center gap-2 text-sm text-crushly-secondary">
+              <Sparkles className="h-5 w-5 text-accent" strokeWidth={2.2} />
+              Intent-Based Matching
             </div>
 
-            <div className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4 text-love" />
-              Real-time Chat
+            <div className="flex items-center gap-2 text-sm text-crushly-secondary">
+              <MessageCircle className="h-5 w-5 text-love" strokeWidth={2.2} />
+              Private Messaging
             </div>
           </div>
         </div>

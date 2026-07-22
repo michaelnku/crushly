@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Bell,
@@ -8,33 +11,35 @@ import {
   Star,
   X,
 } from "lucide-react";
-
-const profile = {
-  name: "Emily",
-  age: 24,
-  location: "2 km away",
-  bio: "Coffee lover ☕ • Weekend hiker 🥾 • Looking for genuine connections.",
-  interests: ["Travel", "Coffee", "Music"],
-  image:
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&q=80",
-};
+import FloatingBadge from "./FloatingBadge";
+import { floatingBadges, mockProfiles } from "./mock-data";
 
 export default function PhoneMockup() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const profile = mockProfiles[currentIndex];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % mockProfiles.length);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative">
       {/* Floating badges */}
 
-      <div className="absolute -left-10 top-16 z-20 rounded-full bg-crushly-glass border border-crushly-soft px-4 py-2 backdrop-blur-xl shadow-crushly animate-bounce">
-        ❤️ 98% Match
-      </div>
-
-      <div className="absolute -right-12 top-40 z-20 rounded-full bg-crushly-glass border border-crushly-soft px-4 py-2 backdrop-blur-xl shadow-crushly">
-        ✨ Verified
-      </div>
-
-      <div className="absolute -right-8 bottom-20 z-20 rounded-full bg-crushly-glass border border-crushly-soft px-4 py-2 backdrop-blur-xl shadow-crushly">
-        💬 New Like
-      </div>
+      {floatingBadges.map((badge, index) => (
+        <FloatingBadge
+          key={badge.id}
+          text={badge.text}
+          emoji={badge.emoji}
+          position={badge.position}
+          delay={index * 1.5}
+        />
+      ))}
 
       {/* Phone */}
 
@@ -77,7 +82,20 @@ export default function PhoneMockup() {
 
         {/* Profile Card */}
 
-        <div className="mx-4 mt-5 overflow-hidden rounded-[28px] bg-crushly-bg-soft">
+        <div
+          key={profile.id}
+          className="
+    mx-4
+    mt-5
+    overflow-hidden
+    rounded-[28px]
+    bg-crushly-bg-soft
+    animate-in
+    fade-in
+    duration-500
+  "
+        >
+          {" "}
           <div className="relative h-[420px]">
             <Image
               src={profile.image}
@@ -88,23 +106,43 @@ export default function PhoneMockup() {
             />
 
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6">
-              <div className="flex items-end gap-2">
+              <div className="flex items-center gap-2">
                 <h2 className="text-3xl font-bold text-white">
                   {profile.name}
                 </h2>
 
                 <span className="pb-1 text-xl text-white">{profile.age}</span>
+                {profile.verified && (
+                  <span className="rounded-full bg-blue-500 px-2 py-0.5 text-[10px] font-semibold uppercase">
+                    ✓
+                  </span>
+                )}
               </div>
 
-              <div className="mt-2 flex items-center gap-2 text-sm text-white/90">
-                <MapPin size={16} />
+              <div className="mt-2 flex items-center justify-between text-sm text-white/90">
+                <div className="flex items-center gap-2">
+                  <MapPin size={16} />
+                  {profile.location}
+                </div>
 
-                {profile.location}
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      profile.online ? "bg-green-400" : "bg-gray-400"
+                    }`}
+                  />
+
+                  {profile.online ? "Online" : "Offline"}
+                </div>
               </div>
             </div>
           </div>
-
           <div className="space-y-4 p-5">
+            <div className="flex items-center justify-between">
+              <span className="rounded-full bg-love/15 px-3 py-1 text-xs font-semibold text-love">
+                ❤️ {profile.compatibility}% Match
+              </span>
+            </div>
             <p className="text-sm leading-6 text-crushly-secondary">
               {profile.bio}
             </p>
