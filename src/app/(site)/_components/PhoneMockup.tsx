@@ -16,15 +16,26 @@ import { floatingBadges, mockProfiles } from "./mock-data";
 
 export default function PhoneMockup() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
 
   const profile = mockProfiles[currentIndex];
 
   useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % mockProfiles.length);
+      setIsVisible(false);
+
+      timeout = setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % mockProfiles.length);
+        setIsVisible(true);
+      }, 400);
     }, 4500);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (timeout) clearTimeout(timeout);
+    };
   }, []);
 
   return (
@@ -71,10 +82,21 @@ export default function PhoneMockup() {
         {/* Header */}
 
         <div className="mt-6 flex items-center justify-between px-5">
-          <div className="flex items-center gap-2">
-            <Heart className="h-6 w-6 fill-love text-love" />
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-10 w-10 items-center justify-center">
+              {/* Glow */}
+              <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-md opacity-70" />
 
-            <span className="font-bold text-lg">Crushly</span>
+              {/* Icon */}
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-crushly-gradient shadow-crushly">
+                <Heart
+                  className="h-5 w-5 fill-white text-white"
+                  strokeWidth={2.4}
+                />
+              </div>
+            </div>
+
+            <span className="text-xl font-black tracking-tight">Crushly</span>
           </div>
 
           <Bell className="text-crushly-secondary" />
@@ -83,19 +105,18 @@ export default function PhoneMockup() {
         {/* Profile Card */}
 
         <div
-          key={profile.id}
-          className="
+          className={`
     mx-4
     mt-5
     overflow-hidden
     rounded-[28px]
     bg-crushly-bg-soft
-    animate-in
-    fade-in
-    duration-500
-  "
+    transition-[opacity,transform]
+    duration-400
+    ease-in-out
+    ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-[0.98]"}
+  `}
         >
-          {" "}
           <div className="relative h-[420px]">
             <Image
               src={profile.image}

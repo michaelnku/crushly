@@ -85,11 +85,22 @@ export function LandingPage() {
       {/* NAV */}
 
       <header className="relative z-20 mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <Heart className="fill-love text-love h-7 w-7" />
+        <div className="flex items-center gap-3">
+          <div className="relative flex h-10 w-10 items-center justify-center">
+            {/* Glow */}
+            <div className="absolute inset-0 rounded-full bg-crushly-gradient blur-md opacity-70" />
 
-          <span className="text-2xl font-black">Crushly</span>
-        </Link>
+            {/* Icon */}
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-crushly-gradient shadow-crushly">
+              <Heart
+                className="h-5 w-5 fill-white text-white"
+                strokeWidth={2.4}
+              />
+            </div>
+          </div>
+
+          <span className="text-xl font-black tracking-tight">Crushly</span>
+        </div>
 
         <div className="flex items-center gap-3">
           <Link
